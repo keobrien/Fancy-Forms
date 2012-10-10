@@ -1,0 +1,60 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie6 lteie7 lteie8" lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7 lteie7 lteie8" lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8 lteie8" lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="en" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<title>jQuery Fancy Forms Demo</title>
+	
+    <link rel="stylesheet" href="jquery.fancy_forms.css" />
+</head>
+<body>
+
+	<!-- Example 1: Standard -->
+	<select class="example-standard">
+		<option>All</option>
+		<option>Option 1</option>
+		<option>Option 2</option>
+		<option>Option 3</option>
+		<option>Option 4</option>
+		<option>Option 5</option>
+	</select>
+	<br/>
+	<!-- Example 2: Buttons Only -->
+	<select class="example-btn">
+		<option>All</option>
+		<option selected="selected">Option 1</option>
+		<option>Option 2</option>
+		<option>Option 3</option>
+		<option>Option 4</option>
+		<option>Option 5</option>
+	</select>
+	<br/>
+	<!-- Example 3: No Background -->
+	<select class="example-no_bg">
+		<option>All</option>
+		<option>Option 1</option>
+		<option>Option 2</option>
+		<option>Option 3</option>
+		<option selected="selected">Option 4</option>
+		<option>Option 5</option>
+	</select>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="jquery.fancy_forms.js"></script>
+<script type="text/javascript">
+$('.example-no_bg').cw_fancy_selects({wrap_class: 'fancy_selects-no_bg-wrap'});
+$('.example-btn').cw_fancy_selects({wrap_class: 'fancy_selects-button-wrap'});
+$('select').cw_fancy_selects();
+
+$('.example-no_bg').change(function(){ alert('.example-no_bg was changed') });
+$(window).on('fancy_change.CW_fancy_selects', function(evt, evt_data){
+	alert('fancy select was changed, check console for info');
+	console.info([evt, evt_data]);
+})
+</script>
+</body>
+</html>
