@@ -50,7 +50,7 @@ $('.example-no_bg').cw_fancy_selects({wrap_class: 'fancy_selects-no_bg-wrap'});
 $('.example-btn').cw_fancy_selects({wrap_class: 'fancy_selects-button-wrap'});
 $('select').cw_fancy_selects();
 
-$('.example-no_bg').change(function(){ alert('.example-no_bg was changed') });
+$('select.example-no_bg').change(function(){ alert('.example-no_bg was changed') });
 $(window).on('fancy_change.CW_fancy_selects', function(evt, evt_data){
 	alert('fancy select was changed, check console for info');
 	console.info([evt, evt_data]);
