@@ -1,4 +1,14 @@
-// Selects
+/*
+Project Name: Fancy Forms
+URL: https://github.com/keobrien/Fancy-Forms
+Author: Kevin O'Brien
+Company: Clockwork Acive Media Systems
+Company Site: clockwork.net
+License: MIT
+Copyright (C) 2012 Clockwork Active Media Systems
+Version: 0.1
+**************************************/
+
 (function ($) {
 
 	"use strict";

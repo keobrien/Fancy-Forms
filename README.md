@@ -1,0 +1,1 @@
+Please see demo html page.  More direction to come.  Can be minified here: http://closure-compiler.appspot.com/home
