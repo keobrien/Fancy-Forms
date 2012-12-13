@@ -19,7 +19,7 @@ Version: 0.1
 	// Custom events
 		component_initialized  =  'component_initialized' + event_suffix,
 		component_error        =  'component_error'       + event_suffix,
-		event_change           =  'fancy_change'                + event_suffix;
+		event_change           =  'fancy_change'          + event_suffix;
 
 	var methods  =  {
 
@@ -39,7 +39,7 @@ Version: 0.1
 				}, settings);
 
 			var visible_content  =  options.content || options.selected.html();
-			options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '" id="' + options.wrap_id + '"></' + options.wrap_id + '>';
+			options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '" id="' + options.wrap_id + '"></' + options.wrap_tag + '>';
 			options.visible_html   =  '<' + options.visible_tag + ' class="' + options.visible_class + '">' + visible_content + '</' + options.visible_tag + '>'
 
 			$el.data(data_key, options);
