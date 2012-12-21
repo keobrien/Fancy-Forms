@@ -14,8 +14,8 @@ Version: 0.1
 	"use strict";
 
 	// These locally scoped variables help minification by aliasing strings
-	var data_key               =  'CW_fancy_selects-options',
-		event_suffix           =  '.CW_fancy_selects',
+	var data_key               =  'CW_fancy_forms',
+		event_suffix           =  '.CW_fancy_forms',
 	// Custom events
 		component_initialized  =  'component_initialized' + event_suffix,
 		component_error        =  'component_error'       + event_suffix,
@@ -23,7 +23,10 @@ Version: 0.1
 
 	var methods  =  {
 
-		init  :  function (settings) {
+
+		/* Selects
+		*****************/
+		_init_selects  :  function (settings) {
 
 			if($(this).hasClass('fancy_selects-active')) { return this; }
 
@@ -40,7 +43,7 @@ Version: 0.1
 
 			var visible_content  =  options.content || options.selected.html();
 			options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '" id="' + options.wrap_id + '"></' + options.wrap_tag + '>';
-			options.visible_html   =  '<' + options.visible_tag + ' class="' + options.visible_class + '">' + visible_content + '</' + options.visible_tag + '>'
+			options.visible_html   =  '<' + options.visible_tag + ' class="' + options.visible_class + '">' + visible_content + '</' + options.visible_tag + '>';
 
 			$el.data(data_key, options);
 
@@ -62,11 +65,36 @@ Version: 0.1
 				$('<div class="fancy_selects-fallback_button">&nu;</div>').appendTo(options.$wrap);
 			}
 
-			options.$wrap.css({
-				'display'        :  'inline-block',
-				'position'       :  'relative',
-				'width'          :  $el.outerWidth() + 'px'
-			}).addClass($el.attr('class'));
+			methods.apply_facy_css($el, options.$wrap);
+
+			$el.change(methods.update_selected_select);
+
+			$el.trigger(component_initialized, options);
+		},
+
+
+		update_selected_select  :  function (evt) {
+
+			var	$el      =  $(evt.currentTarget),
+				options  =  $el.data(data_key);
+
+			options.selected  =  options.$wrap.find('option:selected');
+			options.$visible.html(options.selected.html());
+
+			$el.trigger(event_change, options);
+		},
+
+		/* Shared
+		*****************/
+		apply_facy_css  :  function($el, $wrapper) {
+
+			$wrapper
+				.css({
+					'position'       :  'relative',
+					'width'          :  $el.outerWidth() + 'px'
+				})
+				.addClass($el.attr('class'))
+				.attr('id', data_key + '-' + $el.attr('id' ));
 
 			$el.css({
 				'opacity'  :  0,
@@ -78,20 +106,55 @@ Version: 0.1
 				'z-index'     :  2,
 				'cursor'      :  'pointer'
 			});
+		},
 
-			$el.change(methods.update_selected);
+		/* Checkboxes
+		*****************/
+		_init_checks  :  function (settings) {
 
-			$el.trigger(component_initialized, options);
+			var $el  =  $(this),
+				options  =  $.extend({
+					selected_class  :  'fancy_checkbox-checked',
+					wrap_class      :  'fancy_checkbox-wrap',
+					wrap_id         :  $el.attr('id') ? 'fancy_checkbox-' + $el.attr('id') : '',
+					wrap_tag        :  'div'
+				}, settings);
+
+			options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '" id="' + options.wrap_id + '"></' + options.wrap_tag + '>';
+
+			$el.data(data_key, options);
+
+			methods._make_fancy_checks($el);
+
+			return this;
 		},
 
 
-		update_selected  :  function (evt) {
+		_make_fancy_checks  :  function ($el) {
 
-			var	$el      =  $(evt.currentTarget),
-				options  =  $el.data(data_key);
+			var	options  =  $el.data(data_key);
 
-			options.selected  =  options.$wrap.find('option:selected');
-			options.$visible.html(options.selected.html());
+			$el
+				.wrap(options.wrap_html)
+				.change(methods.update_selected_check)
+				.each(methods.update_selected_check)
+				.trigger(component_initialized, options);
+
+			methods.apply_facy_css($el, $el.parent());
+		},
+
+
+		update_selected_check  :  function (evt) {
+
+			var	options  =  evt ? $(evt.currentTarget).data(data_key) : $(this).data(data_key),
+				$el   =  $(this),
+				checked  =  $el.attr('checked');
+
+			if(checked === 'checked') {
+				$el.parent().addClass(options.selected_class);
+			}else {
+				$el.parent().removeClass(options.selected_class);
+			}
 
 			$el.trigger(event_change, options);
 		}
@@ -103,7 +166,17 @@ Version: 0.1
 			return $(this).map(function(i, val) { return methods[method].apply(this, Array.prototype.slice.call(arguments, 1)); });
 		} else if (typeof method === 'object' || !method) {
 			var args  =  arguments;
-			return $(this).map(function(i, val) { return methods.init.apply(this, args); });
+			return $(this).map(function(i, val) { return methods._init_selects.apply(this, args); });
+		}
+	};
+
+	$.fn.cw_fancy_checks  =  function (method) {
+
+		if (methods[method] && method.charAt(0) !== '_') {
+			return $(this).map(function(i, val) { return methods[method].apply(this, Array.prototype.slice.call(arguments, 1)); });
+		} else if (typeof method === 'object' || !method) {
+			var args  =  arguments;
+			return $(this).map(function(i, val) { return methods._init_checks.apply(this, args); });
 		}
 	};
 
