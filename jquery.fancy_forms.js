@@ -35,6 +35,7 @@ Version: 0.1
 					content         :  null,
 					selected        :  $el.find('option:selected'),
 					wrap_class      :  'fancy_selects-wrap',
+					// consider a private function
 					wrap_id         :  $el.attr('id') ? 'fancy_selects-' + $el.attr('id') : '',
 					wrap_tag        :  'div',
 					visible_class   :  'fancy_selects-visible',
@@ -65,11 +66,13 @@ Version: 0.1
 				$('<div class="fancy_selects-fallback_button">&nu;</div>').appendTo(options.$wrap);
 			}
 
-			methods.apply_facy_css($el, options.$wrap);
+			methods.apply_fancy_css($el, options.$wrap);
 
-			$el.change(methods.update_selected_select);
+			$el
+				.change(methods.update_selected_select)
+				.on(event_change, $wrap, methods.update_selected_select);
 
-			$el.trigger(component_initialized, options);
+			$el.trigger(component_initialized, $wrap, options);
 		},
 
 
@@ -86,7 +89,7 @@ Version: 0.1
 
 		/* Shared
 		*****************/
-		apply_facy_css  :  function($el, $wrapper) {
+		apply_fancy_css  :  function($el, $wrapper) {
 
 			$wrapper
 				.css({
@@ -138,9 +141,10 @@ Version: 0.1
 				.wrap(options.wrap_html)
 				.change(methods.update_selected_check)
 				.each(methods.update_selected_check)
-				.trigger(component_initialized, options);
+				.trigger(component_initialized, options)
+				.on(event_change, $wrap, methods.update_selected_select);
 
-			methods.apply_facy_css($el, $el.parent());
+			methods.apply_fancy_css($el, $el.parent());
 		},
 
 
