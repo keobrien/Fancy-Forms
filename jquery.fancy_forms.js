@@ -84,7 +84,6 @@ Version: 0.1
 			options.selected  =  options.$wrap.find('option:selected');
 			options.$visible.html(options.selected.html());
 
-			$el.trigger(event_change, options);
 		},
 
 		/* Shared
