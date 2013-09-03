@@ -70,9 +70,9 @@ Version: 0.1
 
 			$el
 				.change(methods.update_selected_select)
-				.on(event_change, $wrap, methods.update_selected_select);
+				.on(event_change, options.$wrap, methods.update_selected_select);
 
-			$el.trigger(component_initialized, $wrap, options);
+			$el.trigger(component_initialized, options.$wrap, options);
 		},
 
 
@@ -81,8 +81,10 @@ Version: 0.1
 			var	$el      =  $(evt.currentTarget),
 				options  =  $el.data(data_key);
 
-			options.selected  =  options.$wrap.find('option:selected');
-			options.$visible.html(options.selected.html());
+			if(options.$visible) {
+				options.selected  =  options.$wrap.find('option:selected');
+				options.$visible.html(options.selected.html());
+			}
 
 		},
 
@@ -140,8 +142,9 @@ Version: 0.1
 				.wrap(options.wrap_html)
 				.change(methods.update_selected_check)
 				.each(methods.update_selected_check)
-				.trigger(component_initialized, options)
-				.on(event_change, $wrap, methods.update_selected_select);
+				.trigger(component_initialized, options);
+			
+			options.$wrap = $el.parent();
 
 			methods.apply_fancy_css($el, $el.parent());
 		},
@@ -151,9 +154,9 @@ Version: 0.1
 
 			var	options  =  evt ? $(evt.currentTarget).data(data_key) : $(this).data(data_key),
 				$el   =  $(this),
-				checked  =  $el.attr('checked');
+				checked  =  $el.prop('checked');
 
-			if(checked === 'checked') {
+			if(checked === true) {
 				$el.parent().addClass(options.selected_class);
 			}else {
 				$el.parent().removeClass(options.selected_class);
