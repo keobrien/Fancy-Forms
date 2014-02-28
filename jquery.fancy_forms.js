@@ -34,6 +34,7 @@ Version: 0.2
 				options  =  $.extend({
 					// Settings for selects, checkboxes and radios
 					selected_class  :  class_prefix + type + '-checked',
+					disabled_class  :  class_prefix + type + '-disabled',
 					wrap_class      :  class_prefix + type +'-wrap',
 					wrap_id         :  $el.attr('id') ? class_prefix + type +'-' + $el.attr('id') : '',
 					wrap_tag        :  'div',
@@ -109,13 +110,17 @@ Version: 0.2
 
 			var	$el      =  $(this),
 				options  =  evt ? $(evt.currentTarget).data(data_key) : $(this).data(data_key),
-				checked  =  $el.prop('checked');
+				checked  =  $el.prop('checked'),
+				disabled =  $el.prop('disabled');
 
 			if((options.type === 'select') && options.$visible) {
 				options.selected  =  options.$wrap.find('option:selected');
 				options.$visible.html(options.selected.html());
 			}else {
 				checked === true ? $el.parent().addClass(options.selected_class) : $el.parent().removeClass(options.selected_class);
+			}
+			if(disabled) {
+				$el.parent().addClass(options.disabled_class);
 			}
 
 		}
