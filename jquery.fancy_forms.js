@@ -40,9 +40,13 @@ Version: 0.2
 					wrap_tag        :  'div',
 					type            :  type
 				}, settings);
-			options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '" id="' + options.wrap_id + '"></' + options.wrap_tag + '>';
+			if( options.wrap_id !== '') {
+				options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '" id="' + options.wrap_id + '"></' + options.wrap_tag + '>';
+			}
+			else {
+				options.wrap_html       =  '<' + options.wrap_tag + ' class="' + options.wrap_class + '"></' + options.wrap_tag + '>';
+			}
 			$elements = $elements.add(this);
-			
 			if(type === 'select') {
 				// Settings specific to selects
 				options  =  $.extend({
@@ -83,8 +87,13 @@ Version: 0.2
 					'width'          :  $el.outerWidth() + 'px',
 					'height'          :  $el.outerHeight() + 'px'
 				})
-				.addClass(data_key + '-' + $el.attr('class'))
-				.attr('id', data_key + '-' + $el.attr('id' ));
+			if($el.attr('class')) {
+				options.$wrap.addClass(class_prefix + $el.attr('class'))
+			}	
+			
+			if( $el.attr('id' ) ) {
+				options.$wrap.attr('id', class_prefix + $el.attr('id' ));
+			}
 
 			if(options.type === 'select') {
 				options.$visible  =  $(options.visible_html).appendTo(options.$wrap);
